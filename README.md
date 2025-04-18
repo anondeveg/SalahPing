@@ -15,15 +15,15 @@ This project is still under development. Features are being added, and improveme
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/salah-reminder.git
-    ```
-2. Navigate to the project directory:
+```bash
+   git clone https://github.com/anondeveg/adhani.git
 ```
+2. Navigate to the project directory:
+```bash
     cd adhani
 ```
 3. Build the program:
-```
+```bash
 go build 
 ```
 ## Contributing
