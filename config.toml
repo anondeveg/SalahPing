@@ -1,0 +1,38 @@
+[location]
+latitude = 30.033333
+longitude = 31.233334
+timezone = "Africa/Cairo"
+
+[calculation]
+method = "UOIF"        
+# Options:
+    #// Muslim World League
+    #// Uses Fajr angle of 18 and an Isha angle of 17
+    # MUSLIM_WORLD_LEAGUE
+    # // Egyptian General Authority of Survey
+    # // Uses Fajr angle of 19.5 and an Isha angle of 17.5
+    # EGYPTIAN
+    # // University of Islamic Sciences, Karachi
+    # // Uses Fajr angle of 18 and an Isha angle of 18
+    # KARACHI
+    # // Umm al-Qura University, Makkah
+    # // Uses a Fajr angle of 18.5 and an Isha angle of 90. Note: You should add a +30 minute custom
+    # // adjustment of Isha during Ramadan.
+    # UMM_AL_QURA
+    # // The Gulf Region
+    # // Uses Fajr and Isha angles of 18.2 degrees.
+    # DUBAI
+    # // Moonsighting Committee
+    # // Uses a Fajr angle of 18 and an Isha angle of 18. Also uses seasonal adjustment values.
+    # MOON_SIGHTING_COMMITTEE
+    # // Referred to as the ISNA method
+    # // Thi#tar
+    # // Modified version of Umm al-Qura that uses a Fajr angle of 18.
+    # QATAR
+    # // Singapore
+    # // Uses a Fajr angle of 20 and an Isha angle of 18
+    # SINGAPORE
+    # // UOIF
+    # // Uses a Fajr angle of 12 and an Isha angle of 12
+    # UOIF
+madhab = "SHAFI_HANBALI_MALIKI"  # or HANAFI
