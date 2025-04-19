@@ -53,6 +53,13 @@ type Config struct {
 		Method string
 		Madhab string
 	}
+	Application struct {
+		Timeout                    uint64
+		IconPath                   string
+		Athan                      string
+		TimeTillNextPrayerReminder bool
+		BeforePrayerTime           int16
+	}
 }
 
 var conf Config

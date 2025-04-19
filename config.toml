@@ -36,3 +36,10 @@ method = "UOIF"
     # // Uses a Fajr angle of 12 and an Isha angle of 12
     # UOIF
 madhab = "SHAFI_HANBALI_MALIKI"  # or HANAFI
+
+[application]
+timeout = 60
+iconpath="/home/iq/code/Go/adhani/data/icon.png"
+athan="/home/iq/code/Go/adhani/data/أذان بصوت جميل عبد الباسط عبد الصمد [eZXSAsjCZXM].mp3"
+timetillnextprayerreminder = true
+beforeprayertime = 20 # will remind you of the prayer X minutes before it

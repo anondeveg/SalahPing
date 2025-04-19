@@ -1,32 +1,36 @@
-# Salah Reminder
+# Adhani
 
-A simple and lightweight Go program designed to remind you of Salah (prayer) times. The goal of this project is to provide a minimalistic, easy-to-use reminder system for daily prayers.
+A simple and lightweight Go program that reminds you of Salah (prayer) times. Designed to be minimalistic, easy to use, and effective for daily prayer reminders.
+✅ Current Status
 
-## Current Status
+The core functionality is working! 🎉
+You can now receive basic Salah time reminders. Development is ongoing, with planned enhancements and community contributions welcome.
+✨ Features
 
-This project is still under development. Features are being added, and improvements are ongoing. Feel free to contribute or open issues if you have any suggestions or encounter problems.
+    ⚡ Lightweight and fast
 
-## Features
+    🕌 Basic reminder functionality for daily Salah times
 
-- Lightweight and easy to run
-- Basic reminder functionality for Salah times
-- Open to future enhancements and community contributions
+    🔧 Easy to customize
 
-## Installation
+    🤝 Open to community ideas and contributions
 
-1. Clone the repository:
-```bash
-   git clone https://github.com/anondeveg/adhani.git
+📦 Installation
+
+    Clone the repository:
+
+```bash 
+git clone https://github.com/anondeveg/adhani.git
 ```
-2. Navigate to the project directory:
+Navigate to the project directory:
 ```bash
-    cd adhani
+cd adhani
 ```
-3. Build the program:
+Build the program:
 ```bash
-go build 
+go build
 ```
-## Contributing
+🤲 Contributing
 
-Feel free to submit issues or pull requests. Contributions are welcome!
-
+Have suggestions or found a bug?
+Feel free to open an issue or submit a pull request. Contributions of any size are always welcome!

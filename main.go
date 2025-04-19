@@ -3,6 +3,7 @@ package main
 import (
 	"adhani/config"
 	"fmt"
+	"log"
 	"os/exec"
 	"time"
 
@@ -10,6 +11,57 @@ import (
 	data "github.com/mnadev/adhango/pkg/data"
 	util "github.com/mnadev/adhango/pkg/util"
 )
+
+/*
+	func beforeprayerreminder(conf config.Config, prayers []Prayer) {
+		for {
+
+			for _, prayer := range prayers {
+				x := int64(time.Now().Unix())
+				y := x - prayer.Time/60
+				fmt.Println(y)
+				if int(prayer.Time-x)/60 < int(conf.Application.BeforePrayerTime) {
+					var m Message = Message{Urgency: "normal", Message: "Prayer Time in 15 minutes\n" + prayer.Prayer + "time is in 15 minutes!", Icon: conf.Application.IconPath}
+					go notify(m)
+				}
+
+				time.Sleep(60 * time.Second)
+
+			}
+			fmt.Println("waiting")
+			time.Sleep(time.Duration(conf.Application.Timeout) * time.Second)
+		}
+
+}
+*/
+type Message struct {
+	Urgency string
+	Message string
+	Icon    string
+	Athan   *string
+}
+
+func notify(message Message) {
+	cmd := exec.Command(
+		"notify-send",
+		"--urgency="+message.Urgency,
+		"--app-name='adhani'",
+		"--icon="+message.Icon,
+		message.Message,
+		"--hint=int:transient:1")
+	err := cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+
+	if message.Athan != nil { // no athan
+		cmd = exec.Command("paplay", *message.Athan)
+		err = cmd.Run()
+		if err != nil {
+			log.Fatalf("Failed to play sound: %v", err)
+		}
+	}
+}
 
 func calculatePrayers(conf config.Config) *calc.PrayerTimes {
 	date := data.NewDateComponents(time.Now())
@@ -65,26 +117,32 @@ func calculatePrayers(conf config.Config) *calc.PrayerTimes {
 	return prayerTimes
 }
 
+type Prayer struct {
+	Time   int64
+	Prayer string
+}
+
 func main() {
 	var conf config.Config = config.LoadConfig()
 
 	times := calculatePrayers(conf)
+	timeray := []Prayer{Prayer{Time: (times.Fajr.Unix()), Prayer: "fajr"}, Prayer{Time: times.Dhuhr.Unix(), Prayer: "dhuhr"}, Prayer{Time: times.Asr.Unix(), Prayer: "asr"}, Prayer{Time: times.Maghrib.Unix(), Prayer: "maghrib"}, Prayer{Time: times.Isha.Unix(), Prayer: "isha"}, Prayer{Time: time.Now().Unix(), Prayer: "test"}}
+	/*
+		if conf.Application.TimeTillNextPrayerReminder {
+			go beforeprayerreminder(conf, timeray)
+		}
+	*/
+
 	for {
-		time.Sleep(60 * time.Second)
-		isnow := int64(times.NextPrayerNow()) == 0
-		if isnow {
-			cmd := exec.Command(
-				"notify-send",
-				"--urgency=critical", // make it stand outreturn
-				"It's time for Fajr. Wake up and pray 🙏",
-			)
-			err := cmd.Run()
-			if err != nil {
-				panic(err)
+
+		for _, prayer := range timeray {
+			var x int = (int(time.Now().Unix()))
+			if x > int(prayer.Time) && int(x-int(conf.Application.Timeout)) < int(prayer.Time) || x == int(prayer.Time) {
+				var m Message = Message{Urgency: "normal", Message: "Prayer Time\n" + prayer.Prayer + "time is in!\nbear in mind timing could be off a little depending on multiple factors", Icon: conf.Application.IconPath, Athan: &conf.Application.Athan}
+				go notify(m)
 			}
 
 		}
-
+		time.Sleep(time.Duration(conf.Application.Timeout) * time.Second)
 	}
-
 }
