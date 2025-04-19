@@ -5,7 +5,6 @@ import (
 	"embed"
 	"encoding/csv"
 	"errors"
-	"fmt"
 	"io/fs"
 	"log"
 	"os"
@@ -32,8 +31,6 @@ var citiesCsv string
 var DataFolder embed.FS
 
 func structToTomlFile(cfg Config, filepath string) bool {
-	fmt.Println(filepath)
-	fmt.Println(cfg)
 	BufWriter := new(bytes.Buffer)
 	err := toml.NewEncoder(BufWriter).Encode(cfg)
 	if err != nil {
@@ -162,9 +159,7 @@ func gen_Default(conf Config) Config {
 	}
 	city := strings.Split(tzname, "/")[1]
 	var geo, _ = cityLookup(city)
-	fmt.Println(geo)
 	long := geo.Longitude
-	fmt.Println(long)
 	lat := geo.Latitude
 	method := "UOIF"
 	madhab := "SHAFI_HANBALI_MALIKI"
