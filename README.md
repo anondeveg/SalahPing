@@ -4,7 +4,7 @@ A simple and lightweight Go program that reminds you of Salah (prayer) times. De
 ✅ Current Status
 
 The core functionality is working! 🎉
-You can now receive basic Salah time reminders. Development is ongoing, with planned enhancements and community contributions welcome.
+You can now receive basic Salah time reminders. Development is ongoing, with planned enhancements and community contributions welcome.w
 ✨ Features
 
     ⚡ Lightweight and fast

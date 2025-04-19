@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
+	"strconv"
 	"time"
 
 	calc "github.com/mnadev/adhango/pkg/calc"
@@ -12,28 +13,23 @@ import (
 	util "github.com/mnadev/adhango/pkg/util"
 )
 
-/*
-	func beforeprayerreminder(conf config.Config, prayers []Prayer) {
-		for {
-
-			for _, prayer := range prayers {
-				x := int64(time.Now().Unix())
-				y := x - prayer.Time/60
-				fmt.Println(y)
-				if int(prayer.Time-x)/60 < int(conf.Application.BeforePrayerTime) {
-					var m Message = Message{Urgency: "normal", Message: "Prayer Time in 15 minutes\n" + prayer.Prayer + "time is in 15 minutes!", Icon: conf.Application.IconPath}
-					go notify(m)
-				}
-
-				time.Sleep(60 * time.Second)
-
+func beforeprayerreminder(conf config.Config, prayers []Prayer) {
+	for {
+		for _, prayer := range prayers {
+			now := int64(time.Now().Unix())
+			time_left := int16((prayer.Time - now) / 60)
+			if time_left > 0 && time_left == conf.Application.BeforePrayerTime {
+				var time_string string = strconv.Itoa(int(conf.Application.BeforePrayerTime))
+				var m Message = Message{Urgency: "normal", Message: "Prayer Time in " + time_string + " minutes\n" + prayer.Prayer + " time is in " + time_string + " minutes!", Icon: conf.Application.IconPath}
+				go notify(m)
 			}
-			fmt.Println("waiting")
-			time.Sleep(time.Duration(conf.Application.Timeout) * time.Second)
+
 		}
+		time.Sleep(time.Duration(conf.Application.Timeout) * time.Second)
+	}
 
 }
-*/
+
 type Message struct {
 	Urgency string
 	Message string
@@ -89,9 +85,6 @@ func calculatePrayers(conf config.Config) *calc.PrayerTimes {
 		params = calc.GetMethodParameters(calc.SINGAPORE)
 	case conf.Calculation.Method == "UOIF":
 		params = calc.GetMethodParameters(calc.UOIF)
-	default:
-		// fallback to a sensible default
-		params = calc.GetMethodParameters(calc.UOIF)
 	}
 
 	coords, err := util.NewCoordinates(conf.Location.Latitude, conf.Location.Longitude)
@@ -125,24 +118,47 @@ type Prayer struct {
 func main() {
 	var conf config.Config = config.LoadConfig()
 
-	times := calculatePrayers(conf)
-	timeray := []Prayer{Prayer{Time: (times.Fajr.Unix()), Prayer: "fajr"}, Prayer{Time: times.Dhuhr.Unix(), Prayer: "dhuhr"}, Prayer{Time: times.Asr.Unix(), Prayer: "asr"}, Prayer{Time: times.Maghrib.Unix(), Prayer: "maghrib"}, Prayer{Time: times.Isha.Unix(), Prayer: "isha"}, Prayer{Time: time.Now().Unix(), Prayer: "test"}}
-	/*
-		if conf.Application.TimeTillNextPrayerReminder {
-			go beforeprayerreminder(conf, timeray)
+	var timeray []Prayer
+	updateTimeray := func() {
+		times := calculatePrayers(conf)
+		timeray = []Prayer{
+			{Time: times.Fajr.Unix(), Prayer: "fajr"},
+			{Time: times.Dhuhr.Unix(), Prayer: "dhuhr"},
+			{Time: times.Asr.Unix(), Prayer: "asr"},
+			{Time: times.Maghrib.Unix(), Prayer: "maghrib"},
+			{Time: times.Isha.Unix(), Prayer: "isha"},
 		}
-	*/
+	}
+
+	// once at startup
+	updateTimeray()
+	lastUpdate := time.Now()
+
+	if conf.Application.TimeTillNextPrayerReminder {
+		go beforeprayerreminder(conf, timeray)
+	}
 
 	for {
+		// every 30 minutes, recalc
+		if time.Since(lastUpdate) >= 30*time.Minute {
+			updateTimeray()
+			lastUpdate = time.Now()
+		}
 
-		for _, prayer := range timeray {
-			var x int = (int(time.Now().Unix()))
-			if x > int(prayer.Time) && int(x-int(conf.Application.Timeout)) < int(prayer.Time) || x == int(prayer.Time) {
-				var m Message = Message{Urgency: "normal", Message: "Prayer Time\n" + prayer.Prayer + "time is in!\nbear in mind timing could be off a little depending on multiple factors", Icon: conf.Application.IconPath, Athan: &conf.Application.Athan}
+		now := time.Now().Unix()
+		for _, p := range timeray {
+			if (now > p.Time && now-int64(conf.Application.Timeout) < p.Time) || now == p.Time {
+				m := Message{
+					Urgency: "normal",
+					Message: fmt.Sprintf("Time for %s prayer.", p.Prayer),
+					Icon:    conf.Application.IconPath,
+					Athan:   &conf.Application.Athan,
+				}
 				go notify(m)
 			}
-
 		}
+
+		// sleep between checks
 		time.Sleep(time.Duration(conf.Application.Timeout) * time.Second)
 	}
 }
