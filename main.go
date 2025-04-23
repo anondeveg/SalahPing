@@ -126,7 +126,6 @@ func main() {
 			{Time: times.Asr.Unix(), Prayer: "asr"},
 			{Time: times.Maghrib.Unix(), Prayer: "maghrib"},
 			{Time: times.Isha.Unix(), Prayer: "isha"},
-			{Time: time.Now().Unix(), Prayer: "fajr"},
 		}
 	}
 
