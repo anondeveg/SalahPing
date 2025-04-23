@@ -1,36 +1,41 @@
-# Adhani
+# salahping
 
-A simple and lightweight Go program that reminds you of Salah (prayer) times. Designed to be minimalistic, easy to use, and effective for daily prayer reminders.
-✅ Current Status
+**salahping** is a simple and lightweight Go program that reminds you of Salah (prayer) times. It is designed to be minimalistic, easy to use, and effective for daily prayer reminders.
 
-The core functionality is working! 🎉
-You can now receive basic Salah time reminders. Development is ongoing, with planned enhancements and community contributions welcome.w
-✨ Features
+## Current Status
 
-    ⚡ Lightweight and fast
+The core functionality is complete.  
+You can now receive basic Salah time reminders. Development is ongoing, and future enhancements are planned. Community contributions are encouraged and welcome.
 
-    🕌 Basic reminder functionality for daily Salah times
+## Features
 
-    🔧 Easy to customize
+- Lightweight and fast  
+- Basic reminder functionality for daily Salah times  
+- Easy to customize  
+- Open to community ideas and contributions  
 
-    🤝 Open to community ideas and contributions
+## todo 
+- return prayer times as json
+- setup the daemon
 
-📦 Installation
+## Installation
 
-    Clone the repository:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/anondeveg/salahping.git
+   ```
 
-```bash 
-git clone https://github.com/anondeveg/adhani.git
-```
-Navigate to the project directory:
-```bash
-cd adhani
-```
-Build the program:
-```bash
-go build
-```
-🤲 Contributing
+2. Navigate to the project directory:
+   ```bash
+   cd salahping
+   ```
 
-Have suggestions or found a bug?
-Feel free to open an issue or submit a pull request. Contributions of any size are always welcome!
+3. Build the program:
+   ```bash
+   go build
+   ```
+
+## Contributing
+
+Have suggestions or found a bug?  
+Feel free to open an issue or submit a pull request. All contributions, big or small, are appreciated.

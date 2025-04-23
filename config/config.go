@@ -71,12 +71,12 @@ func getConfigDir() string {
 	xdg := os.Getenv("XDG_CONFIG_HOME")
 	var cfgdirpath string
 	if xdg != "" {
-		err := os.Mkdir(path.Join(xdg, "adhani"), 0777)
+		err := os.Mkdir(path.Join(xdg, "salahping"), 0777)
 		if err != nil {
 			panic(err)
 		} // do nothing dir exists
 
-		cfgdirpath = filepath.Join(xdg, "adhani")
+		cfgdirpath = filepath.Join(xdg, "salahping")
 
 	} else {
 
@@ -84,11 +84,11 @@ func getConfigDir() string {
 		if err != nil {
 			panic("cannot find home directory: " + err.Error())
 		}
-		errr := os.Mkdir(path.Join(home, ".config", "adhani"), 0777)
+		errr := os.Mkdir(path.Join(home, ".config", "salahping"), 0777)
 		if errr != nil && !os.IsExist(errr) {
 		} // do nothing dir exists
 
-		cfgdirpath = filepath.Join(home, ".config", "adhani")
+		cfgdirpath = filepath.Join(home, ".config", "salahping")
 	}
 	return cfgdirpath
 }

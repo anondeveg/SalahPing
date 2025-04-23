@@ -1,10 +1,10 @@
 package main
 
 import (
-	"adhani/config"
 	"fmt"
 	"log"
 	"os/exec"
+	"salahping/config"
 	"strconv"
 	"time"
 
@@ -41,10 +41,9 @@ func notify(message Message) {
 	cmd := exec.Command(
 		"notify-send",
 		"--urgency="+message.Urgency,
-		"--app-name='adhani'",
+		"--app-name='salahping'",
 		"--icon="+message.Icon,
-		message.Message,
-		"--hint=int:transient:1")
+		message.Message)
 	err := cmd.Run()
 	if err != nil {
 		panic(err)
@@ -127,6 +126,7 @@ func main() {
 			{Time: times.Asr.Unix(), Prayer: "asr"},
 			{Time: times.Maghrib.Unix(), Prayer: "maghrib"},
 			{Time: times.Isha.Unix(), Prayer: "isha"},
+			{Time: time.Now().Unix(), Prayer: "fajr"},
 		}
 	}
 
@@ -155,6 +155,22 @@ func main() {
 					Athan:   &conf.Application.Athan,
 				}
 				go notify(m)
+				if p.Prayer == "fajr" || p.Prayer == "maghrib" {
+					var azkar string
+					time.Sleep(15 * time.Minute)
+					if p.Prayer == "maghrib" {
+						azkar = "night"
+					} else {
+						azkar = "morning"
+					}
+					m := Message{
+						Urgency: "normal",
+						Message: fmt.Sprintf("Time for %s Azkar.", azkar),
+						Icon:    conf.Application.IconPath,
+					}
+					go notify(m)
+
+				}
 			}
 		}
 
